@@ -1,0 +1,26 @@
+┌─────────────────────────────────────────────────────────────┐
+│                        index.html                           │
+│  Static shells: Home, Documents, Tools, Settings, Camera,   │
+│  Crop, Enhance/Editor, Viewer, PDF Builder, modals          │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+        ┌──────────────────┼──────────────────┐
+        ▼                  ▼                  ▼
+   css/app.css       js/app.js          sw.js / manifest.json
+                    (bootstrap)
+                           │
+     ┌──────────┬──────────┼──────────┬──────────┬──────────┐
+     ▼          ▼          ▼          ▼          ▼          ▼
+  core.js    store.js   imaging.js  crop.js   camera.js  editor.js
+  utils      IndexedDB  OpenCV +    crop UI   getUserMedia  enhance/
+  prefs      session    filters +   promise   torch/zoom    edit UI
+                        warp         API       auto-detect
+     │          │          │          │          │          │
+     └──────────┴──────────┴──────────┴──────────┴──────────┘
+                           │
+              ┌────────────┼────────────┐
+              ▼            ▼            ▼
+           pdf.js       ocr.js      screens.js
+           jsPDF        Tesseract   Home/Docs/
+           pdf.js       worker      Tools/Settings/
+                                    Viewer/PDF/OCR

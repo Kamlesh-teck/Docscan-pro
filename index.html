@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1a73e8">
+<title>DocScan Pro</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ===================== MAIN APP SHELL ===================== -->
+<div id="app">
+
+  <!-- HOME -->
+  <section id="screen-home" class="screen active">
+    <div class="screen-body" id="home-body"></div>
+  </section>
+
+  <!-- DOCUMENTS -->
+  <section id="screen-documents" class="screen">
+    <div class="screen-body" id="documents-body"></div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="screen-tools" class="screen">
+    <div class="screen-body" id="tools-body"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="screen-settings" class="screen">
+    <div class="screen-body" id="settings-body"></div>
+  </section>
+
+  <!-- VIEWER -->
+  <section id="screen-viewer" class="screen fullscreen">
+    <header class="topbar" id="viewer-topbar"></header>
+    <div class="screen-body" id="viewer-body"></div>
+  </section>
+
+  <!-- PDF BUILDER -->
+  <section id="screen-pdf" class="screen fullscreen">
+    <header class="topbar" id="pdf-topbar"></header>
+    <div class="screen-body" id="pdf-body"></div>
+  </section>
+
+  <!-- CAMERA -->
+  <section id="screen-camera" class="screen fullscreen camera-screen">
+    <video id="camera-video" autoplay playsinline muted></video>
+    <canvas id="camera-overlay"></canvas>
+
+    <div class="camera-top">
+      <button class="icon-btn light" data-action="camera-close"><span class="material-symbols-rounded">close</span></button>
+      <div class="camera-mode-label" id="camera-mode-label">Document</div>
+      <button class="icon-btn light" data-action="camera-flash" id="camera-flash-btn" style="display:none">
+        <span class="material-symbols-rounded">flash_off</span>
+      </button>
+    </div>
+
+    <div class="camera-hint" id="camera-hint">Point at a document</div>
+
+    <div class="camera-bottom">
+      <button class="icon-btn light" data-action="camera-gallery">
+        <span class="material-symbols-rounded">photo_library</span>
+      </button>
+      <div class="shutter-wrap">
+        <button class="shutter" data-action="camera-shutter" id="camera-shutter"></button>
+        <div class="camera-count hidden" id="camera-count">0</div>
+      </div>
+      <button class="icon-btn light" data-action="camera-switch">
+        <span class="material-symbols-rounded">flip_camera_android</span>
+      </button>
+    </div>
+
+    <div class="camera-zoom" id="camera-zoom-wrap">
+      <input type="range" id="camera-zoom" min="1" max="1" step="0.1" value="1">
+    </div>
+
+    <button class="camera-done hidden" id="camera-done" data-action="camera-done">Done</button>
+    <button class="camera-auto-toggle" id="camera-auto-toggle" data-action="camera-auto">
+      <span class="material-symbols-rounded">auto_awesome</span> Auto
+    </button>
+  </section>
+
+  <!-- CROP -->
+  <section id="screen-crop" class="screen fullscreen">
+    <header class="topbar dark">
+      <button class="icon-btn light" data-action="crop-cancel"><span class="material-symbols-rounded">close</span></button>
+      <span class="topbar-title">Crop</span>
+      <button class="icon-btn light" data-action="crop-done"><span class="material-symbols-rounded">check</span></button>
+    </header>
+    <div class="crop-area" id="crop-area">
+      <canvas id="crop-view"></canvas>
+      <canvas id="crop-overlay"></canvas>
+      <div class="crop-magnifier hidden" id="crop-magnifier">
+        <canvas id="magnifier-canvas" width="120" height="120"></canvas>
+      </div>
+    </div>
+    <div class="crop-toolbar">
+      <button data-action="crop-auto"><span class="material-symbols-rounded">auto_fix_high</span><small>Auto</small></button>
+      <button data-action="crop-rotate-left"><span class="material-symbols-rounded">rotate_left</span><small>Left</small></button>
+      <button data-action="crop-rotate-right"><span class="material-symbols-rounded">rotate_right</span><small>Right</small></button>
+      <button data-action="crop-reset"><span class="material-symbols-rounded">restart_alt</span><small>Reset</small></button>
+    </div>
+    <div class="aspect-bar" id="aspect-bar">
+      <button data-aspect="free" class="active">Free</button>
+      <button data-aspect="a4">A4</button>
+      <button data-aspect="letter">Letter</button>
+      <button data-aspect="custom">Custom</button>
+    </div>
+  </section>
+
+  <!-- ENHANCE / EDITOR -->
+  <section id="screen-enhance" class="screen fullscreen">
+    <header class="topbar">
+      <button class="icon-btn" data-action="editor-back"><span class="material-symbols-rounded">arrow_back</span></button>
+      <span class="topbar-title" id="editor-title">Enhance</span>
+      <div class="topbar-actions">
+        <button class="icon-btn" data-action="editor-undo"><span class="material-symbols-rounded">undo</span></button>
+        <button class="icon-btn" data-action="editor-redo"><span class="material-symbols-rounded">redo</span></button>
+        <button class="icon-btn accent" data-action="editor-save"><span class="material-symbols-rounded">check</span></button>
+      </div>
+    </header>
+
+    <div class="editor-scroll" id="editor-scroll">
+      <div class="sticky-preview">
+        <canvas id="enhance-canvas"></canvas>
+        <button class="compare-btn" id="compare-btn">Hold to compare</button>
+        <div class="preview-badge" id="preview-badge">Original</div>
+      </div>
+
+      <div class="editor-controls">
+        <div class="segmented" id="editor-tabs">
+          <button data-tab="presets" class="active">Presets</button>
+          <button data-tab="adjust">Adjust</button>
+          <button data-tab="transform">Transform</button>
+        </div>
+
+        <div id="preset-panel" class="panel active">
+          <div class="chip-row" id="preset-chips"></div>
+        </div>
+
+        <div id="adjust-panel" class="panel">
+          <div id="slider-list"></div>
+          <button class="btn ghost small" id="reset-adjust">Reset adjustments</button>
+        </div>
+
+        <div id="transform-panel" class="panel">
+          <div class="tool-grid">
+            <button data-action="rotate-left"><span class="material-symbols-rounded">rotate_left</span><small>Rotate L</small></button>
+            <button data-action="rotate-right"><span class="material-symbols-rounded">rotate_right</span><small>Rotate R</small></button>
+            <button data-action="flip-h"><span class="material-symbols-rounded">flip</span><small>Flip H</small></button>
+            <button data-action="flip-v"><span class="material-symbols-rounded">flip</span><small>Flip V</small></button>
+            <button data-action="editor-crop"><span class="material-symbols-rounded">crop</span><small>Crop</small></button>
+            <button data-action="editor-signature"><span class="material-symbols-rounded">draw</span><small>Signature</small></button>
+            <button data-action="editor-watermark"><span class="material-symbols-rounded">branding_watermark</span><small>Watermark</small></button>
+            <button data-action="editor-date"><span class="material-symbols-rounded">calendar_month</span><small>Date</small></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===================== BOTTOM NAV ===================== -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-item active" data-nav="home">
+    <span class="material-symbols-rounded">home</span><span>Home</span>
+  </button>
+  <button class="nav-item" data-nav="documents">
+    <span class="material-symbols-rounded">folder_open</span><span>Documents</span>
+  </button>
+  <button class="nav-scan" data-nav="scan" aria-label="Scan">
+    <span class="material-symbols-rounded">document_scanner</span>
+  </button>
+  <button class="nav-item" data-nav="tools">
+    <span class="material-symbols-rounded">widgets</span><span>Tools</span>
+  </button>
+  <button class="nav-item" data-nav="settings">
+    <span class="material-symbols-rounded">settings</span><span>Settings</span>
+  </button>
+</nav>
+
+<!-- ===================== GLOBAL MODALS ===================== -->
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+<div id="loading-root" class="loading-overlay hidden">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Processing…</div>
+</div>
+
+<!-- ===================== FILE INPUTS ===================== -->
+<input type="file" id="file-images" accept="image/*" multiple hidden>
+<input type="file" id="file-pdf" accept="application/pdf" hidden>
+<input type="file" id="file-qr-image" accept="image/*" hidden>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

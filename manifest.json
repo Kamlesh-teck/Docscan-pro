@@ -1,0 +1,13 @@
+{
+  "name": "DocScan Pro",
+  "short_name": "DocScan",
+  "description": "Professional offline document scanner, cropper, enhancer, OCR and PDF creator.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1117",
+  "theme_color": "#1a73e8",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
