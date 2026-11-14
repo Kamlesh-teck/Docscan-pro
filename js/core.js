@@ -162,19 +162,24 @@ export async function shareBlob(blob, filename, title = 'Document') {
 
 // ===================== SCRIPT LOADER =====================
 const scriptCache = new Map();
-export function loadScript(src) {
+export function loadScript(src, timeout = 15000) {
   if (scriptCache.has(src)) return scriptCache.get(src);
   const p = new Promise((resolve, reject) => {
     const s = document.createElement('script');
-    s.src = src; s.async = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error('Failed to load ' + src));
+    s.src = src;
+    s.async = true;
+    const timer = setTimeout(() => {
+      s.remove();
+      scriptCache.delete(src);  // allow retry on next attempt
+      reject(new Error('Timeout loading ' + src));
+    }, timeout);
+    s.onload = () => { clearTimeout(timer); resolve(); };
+    s.onerror = () => { clearTimeout(timer); reject(new Error('Failed to load ' + src)); };
     document.head.append(s);
   });
   scriptCache.set(src, p);
   return p;
 }
-
 // ===================== PREFERENCES =====================
 const PREF_KEY = 'docscan.prefs.v1';
 export const DEFAULT_PREFS = {
