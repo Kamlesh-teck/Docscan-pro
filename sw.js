@@ -1,4 +1,4 @@
-const CACHE = 'docscan-pro-v2'; // <--- v1 ko v2 se badal dein
+const CACHE = 'docscan-pro-v3'; // <--- v1 ko v2 se badal dein
 const ASSETS = [
   './', './index.html', './manifest.json',
   './css/app.css',
