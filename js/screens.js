@@ -1,5 +1,5 @@
 import {
-  $, $$, el, icon, toast, confirmDialog, promptDialog, showLoading, hideLoading,
+  $, $$, el, icon, toast, confirmDialog, promptDialog, showLoading, hideLoading, setLoadingText,
   formatDate, formatBytes, downloadBlob, shareBlob, uuid, blobToCanvas, canvasToBlob, createCanvas
 } from './core.js';
 import { db, session, duplicateDocument, reorderPages, updatePageAndDoc } from './store.js';
